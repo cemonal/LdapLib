@@ -25,7 +25,7 @@ namespace LdapLib.Repository
             DirectoryEntry = ldapConnection.DirectoryEntry;
             Settings = ldapConnection.Settings;
         }
-        
+
         public static T GetInstance(LdapConnection ldapConnection)
         {
             if (_instance != null) return _instance;
@@ -39,11 +39,15 @@ namespace LdapLib.Repository
 
         public void Delete(string samAccountName)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+
             Delete(IdentityType.SamAccountName, samAccountName);
         }
 
         public void Delete(IdentityType identityType, string identityValue)
         {
+            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "identityValue cannot be empty!");
+
             var principal = FindByIdentity(identityType, identityValue);
             principal.Delete();
             principal.Save();
@@ -61,6 +65,8 @@ namespace LdapLib.Repository
 
         public T FindByIdentity(IdentityType identityType, string identityValue)
         {
+            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "identityValue cannot be empty!");
+
             return LdapHelper.FindByIdentity<T>(Context, identityType, identityValue);
         }
 

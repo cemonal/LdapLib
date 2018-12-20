@@ -1,4 +1,5 @@
-﻿using LdapLib.Repository;
+﻿using System;
+using LdapLib.Repository;
 using System.DirectoryServices.AccountManagement;
 
 namespace LdapLib.Services
@@ -18,6 +19,10 @@ namespace LdapLib.Services
         /// <param name="newPassword">New password</param>
         public void ChangePassword(string samAccountName, string oldPassword, string newPassword)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(oldPassword), "oldPassword cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(newPassword), "newPassword cannot be empty!");
+
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
             principal.ChangePassword(oldPassword, newPassword);
             principal.Save();
@@ -29,6 +34,8 @@ namespace LdapLib.Services
         /// <param name="samAccountName">sAMAccountName</param>
         public void ExpirePasswordNow(string samAccountName)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
             principal.ExpirePasswordNow();
             principal.Save();
@@ -41,11 +48,15 @@ namespace LdapLib.Services
         /// <returns></returns>
         public PrincipalSearchResult<Principal> GetAuthorizationGroups(string samAccountName)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+
             return GetAuthorizationGroups(IdentityType.SamAccountName, samAccountName);
         }
 
         public PrincipalSearchResult<Principal> GetAuthorizationGroups(IdentityType identityType, string identityValue)
         {
+            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "identityValue cannot be empty!");
+
             var principal = FindByIdentity(identityType, identityValue);
             return principal.GetAuthorizationGroups();
         }
@@ -57,11 +68,15 @@ namespace LdapLib.Services
         /// <returns></returns>
         public PrincipalSearchResult<Principal> GetGroups(string samAccountName)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+
             return GetGroups(IdentityType.SamAccountName, samAccountName);
         }
 
         public PrincipalSearchResult<Principal> GetGroups(IdentityType identityType, string identityValue)
         {
+            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "identityValue cannot be empty!");
+
             var principal = FindByIdentity(identityType, identityValue);
             return principal.GetGroups();
         }
@@ -73,6 +88,8 @@ namespace LdapLib.Services
         /// <returns></returns>
         public bool IsAccountLockedOut(string samAccountName)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+
             return IsAccountLockedOut(IdentityType.SamAccountName, samAccountName);
         }
 
@@ -88,6 +105,8 @@ namespace LdapLib.Services
         /// <param name="samAccountName">sAMAccountName</param>
         public void UnlockAccount(string samAccountName)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
 
             principal.UnlockAccount();
@@ -100,6 +119,8 @@ namespace LdapLib.Services
         /// <param name="samAccountName">sAMAccountName</param>
         public void RefreshExpiredPassword(string samAccountName)
         {
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
 
             principal.RefreshExpiredPassword();

@@ -45,7 +45,7 @@ namespace LdapLib
             if (!ValidateCredentials())
             {
                 Context = null;
-                throw new InvalidCredentialException("Credentials are invalid!");
+                throw new InvalidCredentialException("Invalid credentials!");
             }
 
             DirectoryEntry = new DirectoryEntry($"LDAP://{server}/{container}", username, password, authenticationType);
