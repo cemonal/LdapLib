@@ -26,7 +26,7 @@ namespace LdapLib.Extensions
         {
             object result = null;
 
-            var isKeyExists = searchResult.Properties.PropertyNames != null && (searchResult.Properties.PropertyNames.Cast<string>().ToArray().Contains(key));
+            var isKeyExists = searchResult.Properties.PropertyNames != null && searchResult.Properties.PropertyNames.Cast<string>().ToArray().Contains(key);
 
             if (isKeyExists)
             {

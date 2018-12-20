@@ -6,10 +6,7 @@ namespace LdapLib.Config
     {
         public LdapSettingsElement this[int index]
         {
-            get
-            {
-                return BaseGet(index) as LdapSettingsElement;
-            }
+            get => BaseGet(index) as LdapSettingsElement;
             set
             {
                 if (BaseGet(index) != null)
@@ -26,7 +23,7 @@ namespace LdapLib.Config
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((LdapSettingsElement)element);
+            return (LdapSettingsElement)element;
         }
     }
 }

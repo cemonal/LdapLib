@@ -40,14 +40,8 @@ namespace LdapLib.Config
         [ConfigurationProperty("useSSL", DefaultValue = false)]
         public bool UseSsl
         {
-            get
-            {
-                return (bool)this["useSSL"];
-            }
-            set
-            {
-                this["useSSL"] = value;
-            }
+            get => (bool)this["useSSL"];
+            set => this["useSSL"] = value;
         }
     }
 }

@@ -8,13 +8,13 @@ using System.Security.Authentication;
 
 namespace LdapLib
 {
-    public class LdapConnection : IDisposable
+    public sealed class LdapConnection : IDisposable, ICloneable
     {
         private string Username { get; }
         private string Password { get; }
-        protected internal PrincipalContext Context { get; }
-        protected internal DirectoryEntry DirectoryEntry { get; }
-        protected internal LdapSettingsElement Settings { get; }
+        internal PrincipalContext Context { get; }
+        internal DirectoryEntry DirectoryEntry { get; }
+        internal LdapSettingsElement Settings { get; }
 
         public LdapConnection(string container)
         {
@@ -51,17 +51,39 @@ namespace LdapLib
             DirectoryEntry = new DirectoryEntry($"LDAP://{server}/{container}", username, password, authenticationType);
         }
 
+        private bool _disposed;
+
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    Context?.Dispose();
+                    DirectoryEntry?.Dispose();
+                }
+            }
+
+            _disposed = true;
+        }
+
+
         public void Dispose()
         {
-            Context?.Dispose();
-            DirectoryEntry?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private bool ValidateCredentials()
         {
-            if (Context == null) throw new Exception("There is no connection!");
+            if (Context == null) throw new InvalidOperationException("There is no connection!");
 
             return Context.ValidateCredentials(Username, Password);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone() as LdapConnection ?? throw new InvalidOperationException("LdapConnection couldn't be copied because object was null.");
         }
     }
 }

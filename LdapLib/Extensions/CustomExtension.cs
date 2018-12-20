@@ -8,7 +8,7 @@ namespace LdapLib.Extensions
     {
         public static IEnumerable<T> DynamicCast<T>(this IEnumerable source)
         {
-            return from dynamic current in source select (T)(current);
+            return from dynamic current in source select (T)current;
         }
     }
 }
