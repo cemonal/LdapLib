@@ -7,8 +7,8 @@ namespace LdapLib.Config
         [ConfigurationProperty("domain")]
         public string Domain => this["domain"] as string;
 
-        [ConfigurationProperty("groupContainer")]
-        public string GroupContainer => this["groupContainer"] as string;
+        //[ConfigurationProperty("groupContainer")]
+        //public string GroupContainer => this["groupContainer"] as string;
 
         [ConfigurationProperty("groupFilter", IsRequired = true)]
         public string GroupFilter => this["groupFilter"] as string;
@@ -25,8 +25,8 @@ namespace LdapLib.Config
         [ConfigurationProperty("server", IsRequired = true)]
         public string Server => this["server"] as string;
 
-        [ConfigurationProperty("userContainer", IsRequired = true)]
-        public string UserContainer => this["userContainer"] as string;
+        //[ConfigurationProperty("userContainer", IsRequired = true)]
+        //public string UserContainer => this["userContainer"] as string;
 
         [ConfigurationProperty("userFilter", IsRequired = true)]
         public string UserFilter => this["userFilter"] as string;

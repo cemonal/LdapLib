@@ -10,9 +10,8 @@ namespace LdapLib.Config
             set
             {
                 if (BaseGet(index) != null)
-                {
                     BaseRemoveAt(index);
-                }
+                
                 BaseAdd(index, value);
             }
         }
