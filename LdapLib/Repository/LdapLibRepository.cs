@@ -37,6 +37,10 @@ namespace LdapLib.Repository
             return _instance;
         }
 
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="samAccountName">samAccountName</param>
         public void Delete(string samAccountName)
         {
             if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
@@ -44,9 +48,14 @@ namespace LdapLib.Repository
             Delete(IdentityType.SamAccountName, samAccountName);
         }
 
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="identityType">Identity type</param>
+        /// <param name="identityValue">Identity value</param>
         public void Delete(IdentityType identityType, string identityValue)
         {
-            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "identityValue cannot be empty!");
+            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "Identity value cannot be empty!");
 
             var principal = FindByIdentity(identityType, identityValue);
             principal.Delete();
@@ -63,9 +72,15 @@ namespace LdapLib.Repository
             return LdapHelper.FindOne(DirectoryEntry, parameters.Filter, parameters.PropertiesToLoad);
         }
 
+        /// <summary>
+        /// Find by identity
+        /// </summary>
+        /// <param name="identityType">Identity type</param>
+        /// <param name="identityValue">Identity value</param>
+        /// <returns></returns>
         public T FindByIdentity(IdentityType identityType, string identityValue)
         {
-            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "identityValue cannot be empty!");
+            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "Identity value cannot be empty!");
 
             return LdapHelper.FindByIdentity<T>(Context, identityType, identityValue);
         }
