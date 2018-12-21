@@ -9,9 +9,6 @@ namespace LdapLib.Repository
 {
     public abstract class LdapLibRepository<T> where T : Principal
     {
-        // A private static instance of the same class
-        private static T _instance;
-        private static readonly object Padlock = new object();
         private PrincipalContext Context { get; }
         private DirectoryEntry DirectoryEntry { get; }
         public string ObjectClass { get; set; }
@@ -19,24 +16,11 @@ namespace LdapLib.Repository
 
         protected LdapLibRepository(LdapConnection ldapConnection)
         {
-            _instance = this as T;
-
             Context = ldapConnection.Context;
             DirectoryEntry = ldapConnection.DirectoryEntry;
             Settings = ldapConnection.Settings;
         }
-
-        public static T GetInstance(LdapConnection ldapConnection)
-        {
-            if (_instance != null) return _instance;
-
-            lock (Padlock)
-                if (_instance == null) // create the instance only if the instance is null
-                    _instance = Activator.CreateInstance(typeof(T), ldapConnection) as T;
-
-            return _instance;
-        }
-
+        
         /// <summary>
         /// Delete
         /// </summary>

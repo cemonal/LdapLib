@@ -6,9 +6,25 @@ namespace LdapLib.Services
 {
     public class LdapUserService : LdapLibRepository<UserPrincipal>
     {
+        // A private static instance of the same class
+        private static LdapUserService _instance;
+        private static readonly object Padlock = new object();
+
         public LdapUserService(LdapConnection ldapConnection) : base(ldapConnection)
         {
+            _instance = this;
             ObjectClass = Settings.UserObjectClass;
+        }
+        
+        public static LdapUserService GetInstance(LdapConnection ldapConnection)
+        {
+            if (_instance != null) return _instance;
+
+            lock (Padlock)
+                if (_instance == null) // create the instance only if the instance is null
+                    _instance = Activator.CreateInstance(typeof(LdapUserService), ldapConnection) as LdapUserService;
+
+            return _instance;
         }
 
         /// <summary>

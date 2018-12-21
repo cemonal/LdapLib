@@ -12,7 +12,6 @@ namespace LdapLib
     {
         private string Username { get; }
         private string Password { get; }
-        private string Server { get; }
 
         internal PrincipalContext Context { get; }
         internal DirectoryEntry DirectoryEntry { get; }
@@ -25,7 +24,6 @@ namespace LdapLib
 
             Username = settings.Username;
             Password = settings.Password;
-            Server = settings.Server;
 
             Context = new PrincipalContext(ContextType.Domain, settings.Server, container, string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password);
 
@@ -35,7 +33,7 @@ namespace LdapLib
                 throw new InvalidCredentialException("Invalid credentials!");
             }
 
-            DirectoryEntry = new DirectoryEntry($"LDAP://{Server}/{container}", string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password, settings.UseSsl ? AuthenticationTypes.SecureSocketsLayer : AuthenticationTypes.Secure);
+            DirectoryEntry = new DirectoryEntry($"LDAP://{Settings.Server}/{container}", string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password, settings.UseSsl ? AuthenticationTypes.SecureSocketsLayer : AuthenticationTypes.Secure);
         }
 
         public LdapConnection(string server, string container, string username, string password, AuthenticationTypes authenticationType)
