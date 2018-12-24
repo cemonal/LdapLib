@@ -6,10 +6,7 @@ namespace LdapLib.Config
     {
         [ConfigurationProperty("domain")]
         public string Domain => this["domain"] as string;
-
-        [ConfigurationProperty("groupFilter", IsRequired = true)]
-        public string GroupFilter => this["groupFilter"] as string;
-
+        
         [ConfigurationProperty("password", IsRequired = true)]
         public string Password => this["password"] as string;
 
@@ -19,17 +16,10 @@ namespace LdapLib.Config
         [ConfigurationProperty("server", IsRequired = true)]
         public string Server => this["server"] as string;
         
-        [ConfigurationProperty("userFilter", IsRequired = true)]
-        public string UserFilter => this["userFilter"] as string;
-
         [ConfigurationProperty("username", IsRequired = true)]
         public string Username => this["username"] as string;
 
-        [ConfigurationProperty("useSSL", DefaultValue = false)]
-        public bool UseSsl
-        {
-            get => (bool)this["useSSL"];
-            set => this["useSSL"] = value;
-        }
+        [ConfigurationProperty("authenticationType", DefaultValue = "Secure")]
+        public string AuthenticationType => this["authenticationType"] as string;
     }
 }

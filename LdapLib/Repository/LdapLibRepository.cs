@@ -11,7 +11,6 @@ namespace LdapLib.Repository
     {
         private PrincipalContext Context { get; }
         private DirectoryEntry DirectoryEntry { get; }
-        protected string ObjectClass { get; set; }
         protected string DefaultFilter { get; set; }
         protected internal LdapSettingsElement Settings { get; }
 

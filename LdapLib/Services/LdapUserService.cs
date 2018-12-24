@@ -14,7 +14,6 @@ namespace LdapLib.Services
         {
             _instance = this;
             DefaultFilter = "(&(objectCategory=person)(objectClass=user){0})";
-            ObjectClass = "user";
         }
 
         public static LdapUserService GetInstance(LdapConnection ldapConnection = null)

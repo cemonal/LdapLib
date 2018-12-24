@@ -86,7 +86,7 @@ namespace LdapLib.Helpers
                 sortOption = new SortOption();
 
             var settings = LdapConfigurationsHelper.GetSettings();
-            var searchScope = (SearchScope)Enum.Parse(typeof(SearchScope), settings.Scope);
+            var searchScope = (SearchScope)Enum.Parse(typeof(SearchScope), settings.Scope, true);
 
             using (var searcher = new DirectorySearcher(directoryEntry, query) { SearchScope = searchScope, PageSize = pageSize, SizeLimit = sizeLimit, Sort = sortOption })
             {

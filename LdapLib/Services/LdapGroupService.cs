@@ -14,7 +14,6 @@ namespace LdapLib.Services
         {
             _instance = this;
             DefaultFilter = "(&(objectClass=group){0})";
-            ObjectClass = "group";
         }
 
         public static LdapGroupService GetInstance(LdapConnection ldapConnection = null)

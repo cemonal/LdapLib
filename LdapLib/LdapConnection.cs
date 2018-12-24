@@ -24,43 +24,29 @@ namespace LdapLib
 
             Username = settings.Username;
             Password = settings.Password;
-
-            Context = new PrincipalContext(ContextType.Domain, settings.Server, container, string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password);
-
-            if (!ValidateCredentials())
-            {
-                Context = null;
-                throw new InvalidCredentialException("Invalid credentials!");
-            }
-
-            DirectoryEntry = new DirectoryEntry($"LDAP://{Settings.Server}/{container}", string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password, settings.UseSsl ? AuthenticationTypes.SecureSocketsLayer : AuthenticationTypes.Secure);
-        }
-
-        public LdapConnection(string server, string container, string username, string password, AuthenticationTypes authenticationType)
-        {
-            Username = username;
-            Password = password;
-
-            Context = new PrincipalContext(ContextType.Domain, server, container, username, password);
+            
+            Context = new PrincipalContext(ContextType.Domain, settings.Server.Replace("LDAP://", ""), container, string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password);
 
             if (!ValidateCredentials())
             {
                 Context = null;
-                throw new InvalidCredentialException("Invalid credentials!");
+                throw new InvalidCredentialException("Invalid credentials! Please check your configurations.");
             }
+
+            var server = Settings.Server;
 
             if (!server.StartsWith("LDAP://"))
                 server = string.Concat("LDAP://", server);
 
-            DirectoryEntry = new DirectoryEntry($"{server}/{container}", username, password, authenticationType);
+            DirectoryEntry = new DirectoryEntry($"LDAP://{server}/{container}", string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password, (AuthenticationTypes)Enum.Parse(typeof(AuthenticationTypes), settings.Scope, true));
         }
-
+        
         public LdapConnection(string server, string container, string domain, string username, string password, AuthenticationTypes authenticationType)
         {
             Username = username;
             Password = password;
 
-            Context = new PrincipalContext(ContextType.Domain, server, container, domain + "\\" + username, password);
+            Context = new PrincipalContext(ContextType.Domain, server.Replace("LDAP://", ""), container, domain + "\\" + username, password);
 
             if (!ValidateCredentials())
             {
@@ -100,7 +86,7 @@ namespace LdapLib
         private bool ValidateCredentials()
         {
             if (Context == null) throw new InvalidOperationException("There is no connection!");
-            
+
             return Context.ValidateCredentials(Username, Password);
         }
 
