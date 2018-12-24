@@ -4,6 +4,8 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using LdapLib.Attributes;
 
 namespace LdapLib.Extensions
 {
@@ -24,25 +26,55 @@ namespace LdapLib.Extensions
 
         public static T GetValue<T>(this SearchResult searchResult, string key, T defaultValue)
         {
-            object result = null;
-
             var isKeyExists = searchResult.Properties.PropertyNames != null && searchResult.Properties.PropertyNames.Cast<string>().ToArray().Contains(key);
 
-            if (isKeyExists)
-            {
-                var value = searchResult.Properties[key][0].ToString();
-                var type = typeof(T);
-                var nullable = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            if (!isKeyExists) return default(T);
+            var value = searchResult.Properties[key][0].ToString();
+            var type = typeof(T);
+            var nullable = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 
-                result = string.IsNullOrEmpty(value) ? defaultValue : Convert.ChangeType(value, nullable ? type.GetGenericArguments()[0] : type, new CultureInfo("en-US"));
-            }
+            var result = string.IsNullOrEmpty(value) ? defaultValue : Convert.ChangeType(value, nullable ? type.GetGenericArguments()[0] : type, new CultureInfo("en-US"));
 
             return (T)result;
+        }
+
+        public static T Cast<T>(this SearchResult searchResult)
+        {
+            var obj = Activator.CreateInstance(typeof(T), true);
+
+            foreach (var prop in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                var code = !prop.TryGetAttribute<LdapPropertyAttribute>(out var ldapPropertyAttribute) ? prop.Name : ldapPropertyAttribute?.Code;
+
+                var method = typeof(LdapExtension).GetMethod("GetValue", new[] { typeof(SearchResult), typeof(string) });
+                var typedMethod = method.MakeGenericMethod(prop.PropertyType);
+                var value = Convert.ChangeType(typedMethod.Invoke(null, new object[] { searchResult, code }), prop.PropertyType);
+
+                prop.SetValue(obj, value, null);
+            }
+
+            return (T)obj;
         }
 
         public static List<SearchResult> ToList(this SearchResultCollection collection)
         {
             return collection.DynamicCast<SearchResult>().ToList();
+        }
+
+        public static List<T> ToList<T>(this SearchResultCollection collection)
+        {
+            var type = typeof(T);
+            var result = new List<T>(collection.Count);
+
+            foreach (SearchResult item in collection)
+            {
+                var method = typeof(LdapExtension).GetMethod("Cast", new[] { typeof(SearchResult) });
+                var typedMethod = method.MakeGenericMethod(type);
+                var value = (T) typedMethod.Invoke(null, new object[] {item});
+                result.Add(value);
+            }
+
+            return result;
         }
 
         public static List<T> RetrieveMembers<T>(this PrincipalCollection collection) where T : Principal
