@@ -38,7 +38,7 @@ namespace LdapLib.Extensions
             return (T)result;
         }
 
-        public static T Cast<T>(this SearchResult searchResult)
+        public static T Cast<T>(this SearchResult searchResult) where T : class
         {
             var obj = Activator.CreateInstance(typeof(T), true);
 
@@ -70,7 +70,7 @@ namespace LdapLib.Extensions
             {
                 var method = typeof(LdapExtension).GetMethod("Cast", new[] { typeof(SearchResult) });
                 var typedMethod = method.MakeGenericMethod(type);
-                var value = (T) typedMethod.Invoke(null, new object[] {item});
+                var value = (T)typedMethod.Invoke(null, new object[] { item });
                 result.Add(value);
             }
 
@@ -82,11 +82,13 @@ namespace LdapLib.Extensions
             object result;
 
             if (collection == null) return null;
-
+            
             if (typeof(T) == typeof(GroupPrincipal))
                 result = collection.Where(x => x.StructuralObjectClass == "group").Select(x => (GroupPrincipal)x).ToList();
             else if (typeof(T) == typeof(UserPrincipal))
                 result = collection.Where(x => x.StructuralObjectClass == "user").Select(x => (UserPrincipal)x).ToList();
+            else if (typeof(T) == typeof(ComputerPrincipal))
+                result = collection.Where(x => x.StructuralObjectClass == "computer").Select(x => (ComputerPrincipal)x).ToList();
             else
                 result = collection.ToList();
 
@@ -103,6 +105,8 @@ namespace LdapLib.Extensions
                 result = collection.Where(x => x.StructuralObjectClass == "group").Select(x => (GroupPrincipal)x).ToList();
             else if (typeof(T) == typeof(UserPrincipal))
                 result = collection.Where(x => x.StructuralObjectClass == "user").Select(x => (UserPrincipal)x).ToList();
+            else if (typeof(T) == typeof(ComputerPrincipal))
+                result = collection.Where(x => x.StructuralObjectClass == "computer").Select(x => (ComputerPrincipal)x).ToList();
             else
                 result = collection.ToList();
 

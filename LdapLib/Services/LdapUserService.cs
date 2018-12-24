@@ -13,16 +13,20 @@ namespace LdapLib.Services
         public LdapUserService(LdapConnection ldapConnection) : base(ldapConnection)
         {
             _instance = this;
-            ObjectClass = Settings.UserObjectClass;
+            DefaultFilter = "(&(objectCategory=person)(objectClass=user){0})";
+            ObjectClass = "user";
         }
-        
-        public static LdapUserService GetInstance(LdapConnection ldapConnection)
+
+        public static LdapUserService GetInstance(LdapConnection ldapConnection = null)
         {
             if (_instance != null) return _instance;
 
+            // create the instance only if the instance is null
             lock (Padlock)
-                if (_instance == null) // create the instance only if the instance is null
-                    _instance = Activator.CreateInstance(typeof(LdapUserService), ldapConnection) as LdapUserService;
+            {
+                if (ldapConnection == null) throw new ArgumentNullException(nameof(ldapConnection), "There is no created instance of this service before. You have to set ldap connection if you want to create new instance for Singleton.");
+                _instance = Activator.CreateInstance(typeof(LdapUserService), ldapConnection) as LdapUserService;
+            }
 
             return _instance;
         }
@@ -30,14 +34,14 @@ namespace LdapLib.Services
         /// <summary>
         /// Change password of the account
         /// </summary>
-        /// <param name="samAccountName">sAMAccountName</param>
+        /// <param name="samAccountName">sAM account name of the user</param>
         /// <param name="oldPassword">Old password</param>
         /// <param name="newPassword">New password</param>
         public void ChangePassword(string samAccountName, string oldPassword, string newPassword)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(oldPassword), "oldPassword cannot be empty!");
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(newPassword), "newPassword cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(oldPassword), "Old password cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(newPassword), "New password cannot be empty!");
 
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
             principal.ChangePassword(oldPassword, newPassword);
@@ -47,10 +51,10 @@ namespace LdapLib.Services
         /// <summary>
         /// Expire password of the user
         /// </summary>
-        /// <param name="samAccountName">sAMAccountName of the user</param>
+        /// <param name="samAccountName">sAM account name of the user</param>
         public void ExpirePasswordNow(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
             principal.ExpirePasswordNow();
@@ -60,11 +64,11 @@ namespace LdapLib.Services
         /// <summary>
         /// Get authorization groups of the user
         /// </summary>
-        /// <param name="samAccountName">sAMAccountName of the user</param>
+        /// <param name="samAccountName">sAM account name of the user</param>
         /// <returns></returns>
         public PrincipalSearchResult<Principal> GetAuthorizationGroups(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             return GetAuthorizationGroups(IdentityType.SamAccountName, samAccountName);
         }
@@ -86,11 +90,11 @@ namespace LdapLib.Services
         /// <summary>
         /// Get groups of the user
         /// </summary>
-        /// <param name="samAccountName">sAMAccountName of the user</param>
+        /// <param name="samAccountName">sAM account name of the user</param>
         /// <returns></returns>
         public PrincipalSearchResult<Principal> GetGroups(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             return GetGroups(IdentityType.SamAccountName, samAccountName);
         }
@@ -112,11 +116,11 @@ namespace LdapLib.Services
         /// <summary>
         /// Is account locked out?
         /// </summary>
-        /// <param name="samAccountName">sAMAccountName of the user</param>
+        /// <param name="samAccountName">sAM account name of the user</param>
         /// <returns></returns>
         public bool IsAccountLockedOut(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             return IsAccountLockedOut(IdentityType.SamAccountName, samAccountName);
         }
@@ -138,10 +142,10 @@ namespace LdapLib.Services
         /// <summary>
         /// Unlock account
         /// </summary>
-        /// <param name="samAccountName">sAMAccountName of the user</param>
+        /// <param name="samAccountName">sAM account name of the user</param>
         public void UnlockAccount(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
 
@@ -152,10 +156,10 @@ namespace LdapLib.Services
         /// <summary>
         /// Refresh expired password of the user
         /// </summary>
-        /// <param name="samAccountName">sAMAccountName of the user</param>
+        /// <param name="samAccountName">sAM account name of the user</param>
         public void RefreshExpiredPassword(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             var principal = FindByIdentity(IdentityType.SamAccountName, samAccountName);
 

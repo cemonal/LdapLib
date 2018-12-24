@@ -13,16 +13,20 @@ namespace LdapLib.Services
         public LdapGroupService(LdapConnection ldapConnection) : base(ldapConnection)
         {
             _instance = this;
-            ObjectClass = ldapConnection.Settings.GroupObjectClass;
+            DefaultFilter = "(&(objectClass=group){0})";
+            ObjectClass = "group";
         }
 
-        public static LdapGroupService GetInstance(LdapConnection ldapConnection)
+        public static LdapGroupService GetInstance(LdapConnection ldapConnection = null)
         {
             if (_instance != null) return _instance;
 
+            // create the instance only if the instance is null
             lock (Padlock)
-                if (_instance == null) // create the instance only if the instance is null
-                    _instance = Activator.CreateInstance(typeof(LdapGroupService), ldapConnection) as LdapGroupService;
+            {
+                if (ldapConnection == null) throw new ArgumentNullException(nameof(ldapConnection), "There is no created instance of this service before. You have to set ldap connection if you want to create new instance for Singleton.");
+                _instance = Activator.CreateInstance(typeof(LdapGroupService), ldapConnection) as LdapGroupService;
+            }
 
             return _instance;
         }
@@ -30,11 +34,11 @@ namespace LdapLib.Services
         /// <summary>
         /// Get members of the group
         /// </summary>
-        /// <param name="samAccountName">samAccountName of the group</param>
+        /// <param name="samAccountName">sAM account name of the group</param>
         /// <returns></returns>
         public PrincipalSearchResult<Principal> GetMembers(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             return GetMembers(IdentityType.SamAccountName, samAccountName);
         }

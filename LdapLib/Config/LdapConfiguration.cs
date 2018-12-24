@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 
-
 namespace LdapLib.Config
 {
     public class LdapConfiguration : ConfigurationSection

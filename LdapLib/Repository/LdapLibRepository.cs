@@ -11,7 +11,8 @@ namespace LdapLib.Repository
     {
         private PrincipalContext Context { get; }
         private DirectoryEntry DirectoryEntry { get; }
-        public string ObjectClass { get; set; }
+        protected string ObjectClass { get; set; }
+        protected string DefaultFilter { get; set; }
         protected internal LdapSettingsElement Settings { get; }
 
         protected LdapLibRepository(LdapConnection ldapConnection)
@@ -20,14 +21,14 @@ namespace LdapLib.Repository
             DirectoryEntry = ldapConnection.DirectoryEntry;
             Settings = ldapConnection.Settings;
         }
-        
+
         /// <summary>
         /// Delete
         /// </summary>
-        /// <param name="samAccountName">samAccountName</param>
+        /// <param name="samAccountName">sAM account name</param>
         public void Delete(string samAccountName)
         {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "samAccountName cannot be empty!");
+            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
 
             Delete(IdentityType.SamAccountName, samAccountName);
         }
@@ -51,9 +52,9 @@ namespace LdapLib.Repository
             return LdapHelper.PrincipalSearch<T>(Context);
         }
 
-        public virtual SearchResult Find(LdapFindParameters parameters)
+        public SearchResult Find(LdapFindParameters parameters)
         {
-            return LdapHelper.FindOne(DirectoryEntry, parameters.Filter, parameters.PropertiesToLoad);
+            return LdapHelper.FindOne(DirectoryEntry, string.Format(DefaultFilter, parameters.Filter), parameters.PropertiesToLoad);
         }
 
         /// <summary>
@@ -62,16 +63,31 @@ namespace LdapLib.Repository
         /// <param name="identityType">Identity type</param>
         /// <param name="identityValue">Identity value</param>
         /// <returns></returns>
-        public T FindByIdentity(IdentityType identityType, string identityValue)
+        protected T FindByIdentity(IdentityType identityType, string identityValue)
         {
             if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "Identity value cannot be empty!");
 
             return LdapHelper.FindByIdentity<T>(Context, identityType, identityValue);
         }
 
-        public virtual SearchResultCollection Search(LdapSearchParameters parameters)
+        public SearchResultCollection Search(LdapSearchParameters parameters)
         {
-            return LdapHelper.FindAll(DirectoryEntry, parameters.Filter, parameters.PropertiesToLoad, parameters.SortOption, parameters.PageSize, parameters.SizeLimit);
+            return LdapHelper.FindAll(DirectoryEntry, string.Format(DefaultFilter, parameters.Filter), parameters.PropertiesToLoad, parameters.SortOption, parameters.PageSize, parameters.SizeLimit);
+        }
+
+        public SearchResultCollection GetAll()
+        {
+            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = int.MinValue, PropertiesToLoad = new string[0] });
+        }
+
+        public SearchResultCollection GetAll(string[] propertiesToLoad)
+        {
+            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = int.MinValue, PropertiesToLoad = propertiesToLoad });
+        }
+
+        public SearchResultCollection GetAll(string[] propertiesToLoad, SortOption sortOption)
+        {
+            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = int.MinValue, PropertiesToLoad = propertiesToLoad, SortOption = sortOption });
         }
     }
 }

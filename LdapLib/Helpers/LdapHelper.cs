@@ -78,7 +78,7 @@ namespace LdapLib.Helpers
             return (T)result;
         }
 
-        public static SearchResultCollection FindAll(DirectoryEntry directoryEntry, string query, string[] propertiesToLoad = null, SortOption sortOption = null, int pageSize = 3000, int sizeLimit = 5000)
+        public static SearchResultCollection FindAll(DirectoryEntry directoryEntry, string query, string[] propertiesToLoad = null, SortOption sortOption = null, int pageSize = int.MaxValue, int sizeLimit = int.MaxValue)
         {
             SearchResultCollection response;
 
