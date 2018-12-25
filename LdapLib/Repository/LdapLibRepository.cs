@@ -7,7 +7,7 @@ using LdapLib.Parameters;
 
 namespace LdapLib.Repository
 {
-    public abstract class LdapLibRepository<T> where T : Principal
+    public abstract class LdapLibRepository<T> : ILdapLibRepository<T> where T : Principal
     {
         private PrincipalContext Context { get; }
         private DirectoryEntry DirectoryEntry { get; }
@@ -46,7 +46,7 @@ namespace LdapLib.Repository
             principal.Save();
         }
 
-        public virtual PrincipalSearchResult<T> PrincipalSearch()
+        public PrincipalSearchResult<T> PrincipalSearch()
         {
             return LdapHelper.PrincipalSearch<T>(Context);
         }
@@ -62,7 +62,7 @@ namespace LdapLib.Repository
         /// <param name="identityType">Identity type</param>
         /// <param name="identityValue">Identity value</param>
         /// <returns></returns>
-        protected T FindByIdentity(IdentityType identityType, string identityValue)
+        public T FindByIdentity(IdentityType identityType, string identityValue)
         {
             if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "Identity value cannot be empty!");
 

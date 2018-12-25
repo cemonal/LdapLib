@@ -53,6 +53,7 @@
     <Compile Include="Repository\LdapLibRepository.cs" />
     <Compile Include="Parameters\LdapSearchParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\LdapComputerService.cs" />
     <Compile Include="Services\LdapGroupService.cs" />
     <Compile Include="Services\LdapUserService.cs" />
   </ItemGroup>
