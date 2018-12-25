@@ -16,7 +16,7 @@ namespace LdapLib.Services
         /// </summary>
         /// <param name="time">A DateTime structure that is used in conjunction with the MatchType to find computers with bad password attempts.</param>
         /// <param name="type">The MatchType that specifies the type of comparison to use in the search.</param>
-        /// <returns></returns>
+        /// <returns>A PrincipalSearchResult<T> that contains one or more ComputerPrincipal objects that match the search parameters, or an empty collection if no matches are found.</returns>
         public PrincipalSearchResult<ComputerPrincipal> FindByBadPasswordAttempt(DateTime time, MatchType type)
         {
             return ComputerPrincipal.FindByBadPasswordAttempt(Context, time, type);
@@ -27,7 +27,7 @@ namespace LdapLib.Services
         /// </summary>
         /// <param name="time">A DateTime structure that is used in conjunction with the MatchType to filter search results.</param>
         /// <param name="type">The MatchType that specifies the type of comparison to use in the search.</param>
-        /// <returns></returns>
+        /// <returns>A PrincipalSearchResult<T> that contains one or more ComputerPrincipal objects that match the search parameters, or an empty collection if no matches are found.</returns>
         public PrincipalSearchResult<ComputerPrincipal> FindByExpirationTime(DateTime time, MatchType type)
         {
             return ComputerPrincipal.FindByExpirationTime(Context, time, type);
@@ -38,7 +38,7 @@ namespace LdapLib.Services
         /// </summary>
         /// <param name="time">A DateTime structure that is used in conjunction with the MatchType to filter search results.</param>
         /// <param name="type">The MatchType that specifies the type of comparison to use in the search.</param>
-        /// <returns></returns>
+        /// <returns>A PrincipalSearchResult<T> that contains one or more ComputerPrincipal objects that match the search parameters, or an empty collection if no matches are found.</returns>
         public PrincipalSearchResult<ComputerPrincipal> FindByLockoutTime(DateTime time, MatchType type)
         {
             return ComputerPrincipal.FindByLockoutTime(Context, time, type);
@@ -49,7 +49,7 @@ namespace LdapLib.Services
         /// </summary>
         /// <param name="time">A DateTime structure that is used in conjunction with the MatchType to filter search results.</param>
         /// <param name="type">The MatchType that specifies the type of comparison to use in the search.</param>
-        /// <returns></returns>
+        /// <returns>A PrincipalSearchResult<T> that contains one or more ComputerPrincipal objects that match the search parameters, or an empty collection if no matches are found.</returns>
         public PrincipalSearchResult<ComputerPrincipal> FindByLogonTime(DateTime time, MatchType type)
         {
             return ComputerPrincipal.FindByLogonTime(Context, time, type);
@@ -60,7 +60,7 @@ namespace LdapLib.Services
         /// </summary>
         /// <param name="time">A DateTime structure that is used in conjunction with the MatchType to filter search results.</param>
         /// <param name="type">The MatchType that specifies the type of comparison to use in the search.</param>
-        /// <returns></returns>
+        /// <returns>A PrincipalSearchResult<T> that contains one or more ComputerPrincipal objects that match the search parameters, or an empty collection if no matches are found.</returns>
         public PrincipalSearchResult<ComputerPrincipal> FindByPasswordSetTime(DateTime time, MatchType type)
         {
             return ComputerPrincipal.FindByPasswordSetTime(Context, time, type);
