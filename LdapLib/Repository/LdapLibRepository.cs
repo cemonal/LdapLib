@@ -22,7 +22,7 @@ namespace LdapLib.Repository
         }
 
         /// <summary>
-        /// Delete
+        /// Deletes the principal object by sAM account name from the store.
         /// </summary>
         /// <param name="samAccountName">sAM account name</param>
         public void Delete(string samAccountName)
@@ -33,10 +33,10 @@ namespace LdapLib.Repository
         }
 
         /// <summary>
-        /// Delete
+        /// Deletes the principal object from the store.
         /// </summary>
-        /// <param name="identityType">Identity type</param>
-        /// <param name="identityValue">Identity value</param>
+        /// <param name="identityType">An IdentityType enumeration value that specifies the format of the identityValue parameter.</param>
+        /// <param name="identityValue">The identity of the principal. This parameter can be any format that is contained in the IdentityType enumeration.</param>
         public void Delete(IdentityType identityType, string identityValue)
         {
             if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "Identity value cannot be empty!");
@@ -59,8 +59,8 @@ namespace LdapLib.Repository
         /// <summary>
         /// Find by identity
         /// </summary>
-        /// <param name="identityType">Identity type</param>
-        /// <param name="identityValue">Identity value</param>
+        /// <param name="identityType">An IdentityType enumeration value that specifies the format of the identityValue parameter.</param>
+        /// <param name="identityValue">The identity of the principal. This parameter can be any format that is contained in the IdentityType enumeration.</param>
         /// <returns></returns>
         public T FindByIdentity(IdentityType identityType, string identityValue)
         {
