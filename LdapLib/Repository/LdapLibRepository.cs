@@ -9,7 +9,7 @@ namespace LdapLib.Repository
 {
     public abstract class LdapLibRepository<T> : ILdapLibRepository<T> where T : Principal
     {
-        private PrincipalContext Context { get; }
+        protected PrincipalContext Context { get; }
         private DirectoryEntry DirectoryEntry { get; }
         protected string DefaultFilter { get; set; }
         protected internal LdapSettingsElement Settings { get; }
