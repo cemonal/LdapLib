@@ -118,7 +118,7 @@ namespace LdapLib.Helpers
                 result = ComputerPrincipal.FindByIdentity(context, identityType, identityValue);
             else
                 result = Principal.FindByIdentity(context, identityType, identityValue);
-
+            
             return (T)result;
         }
 

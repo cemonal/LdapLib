@@ -1,6 +1,7 @@
 ﻿using System;
 using LdapLib.Repository;
 using System.DirectoryServices.AccountManagement;
+using LdapLib.Helpers;
 
 namespace LdapLib.Services
 {
@@ -29,7 +30,7 @@ namespace LdapLib.Services
         }
 
         /// <summary>
-        /// Expire password of the user
+        /// Expires the password for this account. This will force the user to change his/her password at the next logon.
         /// </summary>
         /// <param name="samAccountName">sAM account name of the user</param>
         public void ExpirePasswordNow(string samAccountName)
@@ -54,7 +55,7 @@ namespace LdapLib.Services
         }
 
         /// <summary>
-        /// Get authorization groups of the user
+        /// Returns a collection of principal objects that contains all the authorization groups of which this user is a member. This function only returns groups that are security groups; distribution groups are not returned.
         /// </summary>
         /// <param name="identityType">A IdentityType enumeration value that specifies the format of the identityValue parameter.</param>
         /// <param name="identityValue">The identity of the user principal. This parameter can be any format that is contained in the IdentityType enumeration.</param>
@@ -66,33 +67,7 @@ namespace LdapLib.Services
             var principal = FindByIdentity(identityType, identityValue);
             return principal.GetAuthorizationGroups();
         }
-
-        /// <summary>
-        /// Returns a collection of principal objects that contains all the authorization groups of which this user is a member. This function only returns groups that are security groups; distribution groups are not returned.
-        /// </summary>
-        /// <param name="samAccountName">sAM account name of the user</param>
-        /// <returns></returns>
-        public PrincipalSearchResult<Principal> GetGroups(string samAccountName)
-        {
-            if (string.IsNullOrEmpty(samAccountName)) throw new ArgumentNullException(nameof(samAccountName), "sAM account name cannot be empty!");
-
-            return GetGroups(IdentityType.SamAccountName, samAccountName);
-        }
-
-        /// <summary>
-        /// Returns a collection of principal objects that contains all the authorization groups of which this user is a member. This function only returns groups that are security groups; distribution groups are not returned.
-        /// </summary>
-        /// <param name="identityType">A IdentityType enumeration value that specifies the format of the identityValue parameter.</param>
-        /// <param name="identityValue">The identity of the user principal. This parameter can be any format that is contained in the IdentityType enumeration.</param>
-        /// <returns></returns>
-        public PrincipalSearchResult<Principal> GetGroups(IdentityType identityType, string identityValue)
-        {
-            if (string.IsNullOrEmpty(identityValue)) throw new ArgumentNullException(nameof(identityValue), "Identity value cannot be empty!");
-
-            var principal = FindByIdentity(identityType, identityValue);
-            return principal.GetGroups();
-        }
-
+        
         /// <summary>
         /// Returns a collection of PrincipalSearchResult<T> objects for users that have an incorrect password attempt recorded in the specified date and time range.
         /// </summary>
