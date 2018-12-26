@@ -1,7 +1,6 @@
 ﻿using System;
 using LdapLib.Repository;
 using System.DirectoryServices.AccountManagement;
-using LdapLib.Helpers;
 
 namespace LdapLib.Services
 {
