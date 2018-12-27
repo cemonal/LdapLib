@@ -109,7 +109,7 @@ namespace LdapLib.Helpers
         public static T FindByIdentity<T>(PrincipalContext context, IdentityType identityType, string identityValue) where T : Principal
         {
             object result;
-            
+
             if (typeof(T) == typeof(UserPrincipal))
                 result = UserPrincipal.FindByIdentity(context, identityType, identityValue);
             else if (typeof(T) == typeof(GroupPrincipal))
@@ -118,7 +118,7 @@ namespace LdapLib.Helpers
                 result = ComputerPrincipal.FindByIdentity(context, identityType, identityValue);
             else
                 result = Principal.FindByIdentity(context, identityType, identityValue);
-            
+
             return (T)result;
         }
 
@@ -126,14 +126,17 @@ namespace LdapLib.Helpers
         /// Executes the search and returns a collection of the entries that are found.
         /// </summary>
         /// <param name="directoryEntry">The node in the Active Directory Domain Services hierarchy where the search starts.</param>
-        /// <param name="filter">The search filter string in Lightweight Directory Access Protocol (LDAP) format. </param>
+        /// <param name="filter">The search filter string in Lightweight Directory Access Protocol (LDAP) format.</param>
         /// <param name="propertiesToLoad">The set of properties to retrieve during the search.</param>
         /// <param name="sortOption">Gets or sets a value indicating the property on which the results are sorted.</param>
         /// <param name="pageSize">Gets or sets a value indicating the page size in a paged search.</param>
         /// <param name="sizeLimit">Gets or sets a value indicating the maximum number of the objects that the server returns in a search.</param>
         /// <returns>A SearchResultCollection object that contains the results of the search.</returns>
-        public static SearchResultCollection FindAll(DirectoryEntry directoryEntry, string filter, string[] propertiesToLoad = null, SortOption sortOption = null, int pageSize = int.MaxValue, int sizeLimit = int.MaxValue)
+        public static SearchResultCollection FindAll(DirectoryEntry directoryEntry, string filter, string[] propertiesToLoad = null, SortOption sortOption = null, int pageSize = 0, int sizeLimit = 0)
         {
+            if (pageSize < 0) throw new ArgumentException("Page size cannot be less than 0!", nameof(pageSize));
+            if (sizeLimit < 0) throw new ArgumentException("Size limit cannot be less than 0!", nameof(sizeLimit));
+
             SearchResultCollection response;
 
             if (sortOption == null)

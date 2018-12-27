@@ -48,17 +48,17 @@ namespace LdapLib.Repository
 
         public SearchResultCollection GetAll()
         {
-            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = int.MinValue, PropertiesToLoad = new string[0] });
+            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = 0, PropertiesToLoad = new string[0] });
         }
 
         public SearchResultCollection GetAll(string[] propertiesToLoad)
         {
-            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = int.MinValue, PropertiesToLoad = propertiesToLoad });
+            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = 0, PropertiesToLoad = propertiesToLoad });
         }
 
         public SearchResultCollection GetAll(string[] propertiesToLoad, SortOption sortOption)
         {
-            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = int.MinValue, PropertiesToLoad = propertiesToLoad, SortOption = sortOption });
+            return Search(new LdapSearchParameters { Filter = string.Format(DefaultFilter, ""), PageSize = int.MaxValue, SizeLimit = 0, PropertiesToLoad = propertiesToLoad, SortOption = sortOption });
         }
 
         /// <summary>

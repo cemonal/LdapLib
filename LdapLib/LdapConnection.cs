@@ -38,7 +38,7 @@ namespace LdapLib
             if (!server.StartsWith("LDAP://"))
                 server = string.Concat("LDAP://", server);
 
-            DirectoryEntry = new DirectoryEntry($"LDAP://{server}/{container}", string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password, (AuthenticationTypes)Enum.Parse(typeof(AuthenticationTypes), settings.AuthenticationType, true));
+            DirectoryEntry = new DirectoryEntry($"{server}/{container}", string.IsNullOrEmpty(settings.Domain) ? Username : settings.Domain + "\\" + settings.Username, Password, (AuthenticationTypes)Enum.Parse(typeof(AuthenticationTypes), settings.AuthenticationType, true));
         }
         
         public LdapConnection(string server, string container, string domain, string username, string password, AuthenticationTypes authenticationType)
