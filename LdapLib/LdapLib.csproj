@@ -45,6 +45,7 @@
     <Compile Include="Config\LdapContainerSettingsElement.cs" />
     <Compile Include="Config\LdapSettingsCollection.cs" />
     <Compile Include="Config\LdapSettingsElement.cs" />
+    <Compile Include="Enums\ContainerTypes.cs" />
     <Compile Include="Helpers\LdapConfigurationsHelper.cs" />
     <Compile Include="Extensions\CustomExtension.cs" />
     <Compile Include="Extensions\LdapExtension.cs" />

@@ -2,7 +2,7 @@
 
 namespace LdapLib.Config
 {
-    public class LdapConfiguration : ConfigurationSection
+    internal class LdapConfiguration : ConfigurationSection
     {
         public static LdapConfiguration GetConfig()
         {

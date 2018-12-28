@@ -19,7 +19,7 @@ namespace LdapLib
 
         public LdapConnection(string container)
         {
-            var settings = LdapConfigurationsHelper.GetLdapSettings();
+            var settings = LdapConfigurationsHelper.GetSettings();
             Settings = settings ?? throw new ConfigurationErrorsException("Please check your LdapConfiguration on app / web.config");
 
             Username = settings.Username;

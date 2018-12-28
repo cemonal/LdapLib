@@ -60,7 +60,7 @@ namespace LdapLib.Helpers
         {
             SearchResult response;
 
-            var settings = LdapConfigurationsHelper.GetLdapSettings();
+            var settings = LdapConfigurationsHelper.GetSettings();
             var searchScope = (SearchScope)Enum.Parse(typeof(SearchScope), settings.Scope);
 
             using (var searcher = new DirectorySearcher(directoryEntry, filter) { SearchScope = searchScope, PageSize = 1 })
@@ -142,7 +142,7 @@ namespace LdapLib.Helpers
             if (sortOption == null)
                 sortOption = new SortOption();
 
-            var settings = LdapConfigurationsHelper.GetLdapSettings();
+            var settings = LdapConfigurationsHelper.GetSettings();
             var searchScope = (SearchScope)Enum.Parse(typeof(SearchScope), settings.Scope, true);
 
             using (var searcher = new DirectorySearcher(directoryEntry, filter) { SearchScope = searchScope, PageSize = pageSize, SizeLimit = sizeLimit, Sort = sortOption })

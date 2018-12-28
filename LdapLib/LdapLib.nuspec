@@ -8,7 +8,8 @@
       <authors>Cem Önal</authors>
       <requireLicenseAcceptance>false</requireLicenseAcceptance>
       <frameworkAssemblies>
-         <frameworkAssembly assemblyName="System.DirectoryServices" targetFramework="net40" />
+         <frameworkAssembly assemblyName="System.Configuration" targetFramework="net40" />
+		 <frameworkAssembly assemblyName="System.DirectoryServices" targetFramework="net40" />
          <frameworkAssembly assemblyName="System.DirectoryServices.AccountManagement" targetFramework="net40" />
       </frameworkAssemblies>
       <repository type="git" url="https://github.com/cemonal/LdapLib" />

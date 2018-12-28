@@ -1,8 +1,10 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 
 namespace LdapLib.Config
 {
-    public class LdapContainerSettingsCollection : ConfigurationElementCollection
+    public class LdapContainerSettingsCollection : ConfigurationElementCollection, IEnumerable<LdapContainerSettingsElement>
     {
         public LdapContainerSettingsElement this[int index]
         {
@@ -26,6 +28,11 @@ namespace LdapLib.Config
         protected override object GetElementKey(ConfigurationElement element)
         {
             return (LdapContainerSettingsElement)element;
+        }
+
+        public IEnumerator<LdapContainerSettingsElement> GetEnumerator()
+        {
+            return BaseGetAllKeys().Select(key => (LdapContainerSettingsElement)BaseGet(key)).GetEnumerator();
         }
     }
 }
