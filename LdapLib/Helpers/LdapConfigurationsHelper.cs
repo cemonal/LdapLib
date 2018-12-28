@@ -4,7 +4,7 @@ namespace LdapLib.Helpers
 {
     public static class LdapConfigurationsHelper
     {
-        public static LdapSettingsElement GetSettings()
+        public static LdapSettingsElement GetLdapSettings()
         {
             LdapSettingsElement result = null;
             var config = LdapConfiguration.GetConfig();

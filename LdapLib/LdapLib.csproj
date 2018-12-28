@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="Attributes\LdapPropertyAttribute.cs" />
     <Compile Include="Config\LdapConfiguration.cs" />
+    <Compile Include="Config\LdapContainerSettingsCollection.cs" />
+    <Compile Include="Config\LdapContainerSettingsElement.cs" />
     <Compile Include="Config\LdapSettingsCollection.cs" />
     <Compile Include="Config\LdapSettingsElement.cs" />
     <Compile Include="Helpers\LdapConfigurationsHelper.cs" />

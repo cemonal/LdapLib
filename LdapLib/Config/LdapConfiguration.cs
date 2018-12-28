@@ -11,5 +11,8 @@ namespace LdapLib.Config
 
         [ConfigurationProperty("LdapSettings")]
         public LdapSettingsCollection LdapSettings => (LdapSettingsCollection)this["LdapSettings"] ?? new LdapSettingsCollection();
+
+        [ConfigurationProperty("LdapContainerSettings")]
+        public LdapContainerSettingsCollection LdapContainerSettings => (LdapContainerSettingsCollection)this["LdapContainerSettings"] ?? new LdapContainerSettingsCollection();
     }
 }
