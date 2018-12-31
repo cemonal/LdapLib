@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using LdapLib.Config;
 
 namespace LdapLib.Helpers
@@ -17,19 +19,19 @@ namespace LdapLib.Helpers
             return result;
         }
 
-        public static LdapContainerSettingsCollection GetComputerContainerSettings()
+        public static List<LdapContainerSettingsElement> GetComputerContainerSettings()
         {
-            return GetContainerSettings().Where(x => x.Type == ContainerTypes.Computer.ToString()) as LdapContainerSettingsCollection;
+            return GetContainerSettings().Where(x => string.Equals(x.Type, ContainerTypes.Computer.ToString(), StringComparison.CurrentCultureIgnoreCase)).ToList();
         }
 
-        public static LdapContainerSettingsCollection GetGroupContainerSettings()
+        public static List<LdapContainerSettingsElement> GetGroupContainerSettings()
         {
-            return GetContainerSettings().Where(x => x.Type == ContainerTypes.Group.ToString()) as LdapContainerSettingsCollection;
+            return GetContainerSettings().Where(x => string.Equals(x.Type, ContainerTypes.Group.ToString(), StringComparison.CurrentCultureIgnoreCase)).ToList();
         }
 
-        public static LdapContainerSettingsCollection GetUserContainerSettings()
+        public static List<LdapContainerSettingsElement> GetUserContainerSettings()
         {
-            return GetContainerSettings().Where(x => x.Type == ContainerTypes.User.ToString()) as LdapContainerSettingsCollection;
+            return GetContainerSettings().Where(x => string.Equals(x.Type, ContainerTypes.User.ToString(), StringComparison.CurrentCultureIgnoreCase)).ToList();
         }
 
         public static LdapContainerSettingsCollection GetContainerSettings()

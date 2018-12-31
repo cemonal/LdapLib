@@ -30,9 +30,12 @@ namespace LdapLib.Config
             return (LdapContainerSettingsElement)element;
         }
 
-        public IEnumerator<LdapContainerSettingsElement> GetEnumerator()
+        public new IEnumerator<LdapContainerSettingsElement> GetEnumerator()
         {
-            return BaseGetAllKeys().Select(key => (LdapContainerSettingsElement)BaseGet(key)).GetEnumerator();
+            for (var i = 0; i < Count; i++)
+            {
+                yield return (LdapContainerSettingsElement)BaseGet(i);
+            }
         }
     }
 }
