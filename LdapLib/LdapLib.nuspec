@@ -2,7 +2,7 @@
 <package>
    <metadata>
       <id>LdapLib</id>
-      <version>1.0.8</version>
+      <version>1.0.9</version>
       <title>LdapLib</title>
       <description>LDAP Library for .NET</description>
       <authors>Cem Önal</authors>

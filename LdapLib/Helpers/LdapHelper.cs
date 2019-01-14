@@ -68,9 +68,12 @@ namespace LdapLib.Helpers
             {
                 if (propertiesToLoad != null)
                 {
+                    var padlock = new object();
+
                     Parallel.ForEach(propertiesToLoad, item =>
                     {
-                        searcher.PropertiesToLoad.Add(item);
+                        lock (padlock)
+                            searcher.PropertiesToLoad.Add(item);
                     });
                 }
 
@@ -154,9 +157,12 @@ namespace LdapLib.Helpers
             {
                 if (propertiesToLoad != null)
                 {
+                    var padlock = new object();
+
                     Parallel.ForEach(propertiesToLoad, item =>
                     {
-                        searcher.PropertiesToLoad.Add(item);
+                        lock (padlock)
+                            searcher.PropertiesToLoad.Add(item);
                     });
                 }
 

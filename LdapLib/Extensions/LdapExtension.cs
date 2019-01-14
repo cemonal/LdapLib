@@ -42,18 +42,23 @@ namespace LdapLib.Extensions
         public static T Cast<T>(this SearchResult searchResult) where T : class
         {
             var obj = Activator.CreateInstance(typeof(T), true);
+            var padlock = new object();
 
             Parallel.ForEach(typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public), prop =>
             {
-                var code = !prop.TryGetAttribute<LdapPropertyAttribute>(out var ldapPropertyAttribute) ? prop.Name : ldapPropertyAttribute?.Code;
+                lock (padlock)
+                {
+                    var code = !prop.TryGetAttribute<LdapPropertyAttribute>(out var ldapPropertyAttribute) ? prop.Name : ldapPropertyAttribute?.Code;
 
-                var method = typeof(LdapExtension).GetMethod("GetValue", new[] { typeof(SearchResult), typeof(string) });
-                var typedMethod = method.MakeGenericMethod(prop.PropertyType);
-                var value = Convert.ChangeType(typedMethod.Invoke(null, new object[] { searchResult, code }), prop.PropertyType);
+                    var method = typeof(LdapExtension).GetMethod("GetValue", new[] { typeof(SearchResult), typeof(string) });
+                    var typedMethod = method.MakeGenericMethod(prop.PropertyType);
+                    var value = Convert.ChangeType(typedMethod.Invoke(null, new object[] { searchResult, code }), prop.PropertyType);
 
-                prop.SetValue(obj, value, null);
+
+                    prop.SetValue(obj, value, null);
+                }
             });
-            
+
             return (T)obj;
         }
 
@@ -83,7 +88,7 @@ namespace LdapLib.Extensions
             object result;
 
             if (collection == null) return null;
-            
+
             if (typeof(T) == typeof(GroupPrincipal))
                 result = collection.Where(x => x.StructuralObjectClass == "group").Select(x => (GroupPrincipal)x).ToList();
             else if (typeof(T) == typeof(UserPrincipal))
