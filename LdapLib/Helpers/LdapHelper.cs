@@ -1,6 +1,7 @@
 ﻿using System;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Threading.Tasks;
 
 namespace LdapLib.Helpers
 {
@@ -66,8 +67,12 @@ namespace LdapLib.Helpers
             using (var searcher = new DirectorySearcher(directoryEntry, filter) { SearchScope = searchScope, PageSize = 1 })
             {
                 if (propertiesToLoad != null)
-                    foreach (var item in propertiesToLoad)
+                {
+                    Parallel.ForEach(propertiesToLoad, item =>
+                    {
                         searcher.PropertiesToLoad.Add(item);
+                    });
+                }
 
                 response = searcher.FindOne();
             }
@@ -148,8 +153,12 @@ namespace LdapLib.Helpers
             using (var searcher = new DirectorySearcher(directoryEntry, filter) { SearchScope = searchScope, PageSize = pageSize, SizeLimit = sizeLimit, Sort = sortOption })
             {
                 if (propertiesToLoad != null)
-                    foreach (var item in propertiesToLoad)
+                {
+                    Parallel.ForEach(propertiesToLoad, item =>
+                    {
                         searcher.PropertiesToLoad.Add(item);
+                    });
+                }
 
                 response = searcher.FindAll();
             }

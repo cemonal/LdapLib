@@ -5,6 +5,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using LdapLib.Attributes;
 
 namespace LdapLib.Extensions
@@ -42,7 +43,7 @@ namespace LdapLib.Extensions
         {
             var obj = Activator.CreateInstance(typeof(T), true);
 
-            foreach (var prop in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            Parallel.ForEach(typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public), prop =>
             {
                 var code = !prop.TryGetAttribute<LdapPropertyAttribute>(out var ldapPropertyAttribute) ? prop.Name : ldapPropertyAttribute?.Code;
 
@@ -51,8 +52,8 @@ namespace LdapLib.Extensions
                 var value = Convert.ChangeType(typedMethod.Invoke(null, new object[] { searchResult, code }), prop.PropertyType);
 
                 prop.SetValue(obj, value, null);
-            }
-
+            });
+            
             return (T)obj;
         }
 
