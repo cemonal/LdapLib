@@ -46,16 +46,15 @@ namespace LdapLib.Extensions
 
             Parallel.ForEach(typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public), prop =>
             {
-                lock (padlock)
-                {
-                    var code = !prop.TryGetAttribute<LdapPropertyAttribute>(out var ldapPropertyAttribute) ? prop.Name : ldapPropertyAttribute?.Code;
+                var code = !prop.TryGetAttribute<LdapPropertyAttribute>(out var ldapPropertyAttribute) ? prop.Name : ldapPropertyAttribute?.Code;
 
-                    var method = typeof(LdapExtension).GetMethod("GetValue", new[] { typeof(SearchResult), typeof(string) });
+                var method = typeof(LdapExtension).GetMethod("GetValue", new[] { typeof(SearchResult), typeof(string) });
+                if (method != null)
+                {
                     var typedMethod = method.MakeGenericMethod(prop.PropertyType);
                     var value = Convert.ChangeType(typedMethod.Invoke(null, new object[] { searchResult, code }), prop.PropertyType);
-
-
-                    prop.SetValue(obj, value, null);
+                    lock (padlock)
+                        prop.SetValue(obj, value, null);
                 }
             });
 
@@ -72,13 +71,7 @@ namespace LdapLib.Extensions
             var type = typeof(T);
             var result = new List<T>(collection.Count);
 
-            foreach (SearchResult item in collection)
-            {
-                var method = typeof(LdapExtension).GetMethod("Cast", new[] { typeof(SearchResult) });
-                var typedMethod = method.MakeGenericMethod(type);
-                var value = (T)typedMethod.Invoke(null, new object[] { item });
-                result.Add(value);
-            }
+            result.AddRange(from SearchResult item in collection let method = typeof(LdapExtension).GetMethod("Cast", new[] { typeof(SearchResult) }) let typedMethod = method.MakeGenericMethod(type) select (T)typedMethod.Invoke(null, new object[] { item }));
 
             return result;
         }
