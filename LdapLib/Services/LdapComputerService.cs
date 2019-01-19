@@ -4,7 +4,7 @@ using LdapLib.Repository;
 
 namespace LdapLib.Services
 {
-    public class LdapComputerService : LdapLibRepository<ComputerPrincipal>
+    public class LdapComputerService : LdapLibRepository<ComputerPrincipal>, ILdapComputerService
     {
         public LdapComputerService(LdapConnection ldapConnection) : base(ldapConnection)
         {

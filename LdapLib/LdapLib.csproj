@@ -50,9 +50,12 @@
     <Compile Include="Extensions\CustomExtension.cs" />
     <Compile Include="Extensions\LdapExtension.cs" />
     <Compile Include="Helpers\LdapHelper.cs" />
+    <Compile Include="Repository\ILdapComputerService.cs" />
+    <Compile Include="Repository\ILdapGroupService.cs" />
     <Compile Include="Repository\ILdapLibRepository.cs" />
     <Compile Include="LdapConnection.cs" />
     <Compile Include="Parameters\LdapFindParameters.cs" />
+    <Compile Include="Repository\ILdapUserService.cs" />
     <Compile Include="Repository\LdapLibRepository.cs" />
     <Compile Include="Parameters\LdapSearchParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,7 +4,7 @@ using System.DirectoryServices.AccountManagement;
 
 namespace LdapLib.Services
 {
-    public class LdapUserService : LdapLibRepository<UserPrincipal>
+    public class LdapUserService : LdapLibRepository<UserPrincipal>, ILdapUserService
     {
         public LdapUserService(LdapConnection ldapConnection) : base(ldapConnection)
         {
