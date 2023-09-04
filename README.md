@@ -67,15 +67,25 @@ Make sure to adjust the values according to your LDAP server's configuration.
 Provides functionality related to managing user accounts in the LDAP directory.
 
 - **ChangePassword(samAccountName, oldPassword, newPassword)**: Changes the account password from the old password to the new password.
+  
 - **ExpirePasswordNow(samAccountName)**: Expires the password for an account, requiring the user to change it at the next logon.
+
 - **GetAuthorizationGroups(samAccountName)**: Retrieves the authorization groups of a user.
+
 - **FindByBadPasswordAttempt(time, type)**: Finds users with incorrect password attempts within a specified time range.
+
 - **FindByExpirationTime(time, type)**: Finds users with account expiration times in a specified time range.
+
 - **FindByLockoutTime(time, type)**: Finds users with account lockout times in a specified time range.
+
 - **FindByLogonTime(time, type)**: Finds users with account logon times in a specified time range.
+
 - **FindByPasswordSetTime(time, type)**: Finds users who set their passwords within a specified time range.
+
 - **IsAccountLockedOut(samAccountName)**: Checks if a user account is currently locked out.
+
 - **UnlockAccount(samAccountName)**: Unlocks a locked user account.
+
 - **RefreshExpiredPassword(samAccountName)**: Refreshes an expired password.
 
 ### LdapComputerService
