@@ -66,38 +66,53 @@ Make sure to adjust the values according to your LDAP server's configuration.
 ### LdapUserService
 Provides functionality related to managing user accounts in the LDAP directory.
 
-- **ChangePassword(samAccountName, oldPassword, newPassword)**: Changes the account password from the old password to the new password.
+- **ChangePassword(samAccountName, oldPassword, newPassword)**:
+  Changes the account password from the old password to the new password.
   
-- **ExpirePasswordNow(samAccountName)**: Expires the password for an account, requiring the user to change it at the next logon.
+- **ExpirePasswordNow(samAccountName)**:
+  Expires the password for an account, requiring the user to change it at the next logon.
 
-- **GetAuthorizationGroups(samAccountName)**: Retrieves the authorization groups of a user.
+- **GetAuthorizationGroups(samAccountName)**:
+  Retrieves the authorization groups of a user.
 
-- **FindByBadPasswordAttempt(time, type)**: Finds users with incorrect password attempts within a specified time range.
+- **FindByBadPasswordAttempt(time, type)**:
+  Finds users with incorrect password attempts within a specified time range.
 
-- **FindByExpirationTime(time, type)**: Finds users with account expiration times in a specified time range.
+- **FindByExpirationTime(time, type)**:
+  Finds users with account expiration times in a specified time range.
 
-- **FindByLockoutTime(time, type)**: Finds users with account lockout times in a specified time range.
+- **FindByLockoutTime(time, type)**:
+  Finds users with account lockout times in a specified time range.
 
-- **FindByLogonTime(time, type)**: Finds users with account logon times in a specified time range.
+- **FindByLogonTime(time, type)**:
+  Finds users with account logon times in a specified time range.
 
-- **FindByPasswordSetTime(time, type)**: Finds users who set their passwords within a specified time range.
+- **FindByPasswordSetTime(time, type)**:
+  Finds users who set their passwords within a specified time range.
 
-- **IsAccountLockedOut(samAccountName)**: Checks if a user account is currently locked out.
+- **IsAccountLockedOut(samAccountName)**:
+  Checks if a user account is currently locked out.
 
-- **UnlockAccount(samAccountName)**: Unlocks a locked user account.
+- **UnlockAccount(samAccountName)**:
+  Unlocks a locked user account.
 
-- **RefreshExpiredPassword(samAccountName)**: Refreshes an expired password.
+- **RefreshExpiredPassword(samAccountName)**:
+  Refreshes an expired password.
 
 ### LdapComputerService
 Provides functionality related to managing computer accounts in the LDAP directory.
 
-- **FindByBadPasswordAttempt(time, type)**: Finds computers with bad password attempts within a specified time range.
-- **FindByExpirationTime(time, type)**: Finds computers with account expiration times in a specified time range.
+- **FindByBadPasswordAttempt(time, type)**:
+  Finds computers with bad password attempts within a specified time range.
+
+- **FindByExpirationTime(time, type)**:
+  Finds computers with account expiration times in a specified time range.
 
 ### LdapGroupService
 Provides functionality related to managing group accounts in the LDAP directory.
 
-- **GetMembers(samAccountName, recursive)**: Retrieves the members of a group, optionally searching recursively.
+- **GetMembers(samAccountName, recursive)**:
+  Retrieves the members of a group, optionally searching recursively.
 
 ## Common Methods (Inherited from Base Repository)
 
@@ -105,20 +120,47 @@ These methods are common to all repositories and are inherited from the base rep
 
 ### Methods
 
-- **void Delete(string samAccountName)**: Deletes the principal object by sAM account name from the store.
-- **void Delete(IdentityType identityType, string identityValue)**: Deletes the principal object from the store.
-- **SearchResultCollection GetAll()**: Gets all principal objects from the store.
-- **SearchResultCollection GetAll(string[] propertiesToLoad)**: Gets all principal objects from the store with specified properties to load.
-- **SearchResultCollection GetAll(string[] propertiesToLoad, SortOption sortOption)**: Gets all principal objects from the store with specified properties to load and sort option.
-- **PrincipalSearchResult\<Principal\> GetGroups(string samAccountName)**: Returns a collection of group objects that specify the groups of which the current principal is a member.
-- **PrincipalSearchResult\<Principal\> GetGroups(IdentityType identityType, string identityValue)**: Returns a collection of group objects that specify the groups of which the current principal is a member.
-- **SearchResult Find(LdapFindParameters parameters)**: Finds a principal object in the store based on the provided parameters.
-- **T FindByIdentity(IdentityType identityType, string identityValue)**: Finds a principal object in the store by identity.
-- **bool IsMemberOf(IdentityType identityType, string identityValue, IdentityType groupIdentityType, string groupIdentityValue)**: Checks if a principal object is a member of a specific group.
-- **PrincipalSearchResult\<T\> PrincipalSearch()**: Performs a principal search.
-- **SearchResultCollection Search(LdapSearchParameters parameters)**: Performs a search for principal objects based on the provided parameters.
-- **T Create(T principal, string password)**: Creates a new principal object in the store.
-- **void Update(T principal)**: Updates a principal object in the store.
+- **void Delete(string samAccountName)**:
+  Deletes the principal object by sAM account name from the store.
+
+- **void Delete(IdentityType identityType, string identityValue)**:
+  Deletes the principal object from the store.
+
+- **SearchResultCollection GetAll()**:
+  Gets all principal objects from the store.
+
+- **SearchResultCollection GetAll(string[] propertiesToLoad)**:
+  Gets all principal objects from the store with specified properties to load.
+
+- **SearchResultCollection GetAll(string[] propertiesToLoad, SortOption sortOption)**:
+  Gets all principal objects from the store with specified properties to load and sort option.
+
+- **PrincipalSearchResult\<Principal\> GetGroups(string samAccountName)**:
+  Returns a collection of group objects that specify the groups of which the current principal is a member.
+
+- **PrincipalSearchResult\<Principal\> GetGroups(IdentityType identityType, string identityValue)**:
+  Returns a collection of group objects that specify the groups of which the current principal is a member.
+
+- **SearchResult Find(LdapFindParameters parameters)**:
+  Finds a principal object in the store based on the provided parameters.
+
+- **T FindByIdentity(IdentityType identityType, string identityValue)**:
+  Finds a principal object in the store by identity.
+
+- **bool IsMemberOf(IdentityType identityType, string identityValue, IdentityType groupIdentityType, string groupIdentityValue)**:
+  Checks if a principal object is a member of a specific group.
+
+- **PrincipalSearchResult\<T\> PrincipalSearch()**:
+  Performs a principal search.
+
+- **SearchResultCollection Search(LdapSearchParameters parameters)**:
+  Performs a search for principal objects based on the provided parameters.
+
+- **T Create(T principal, string password)**:
+  Creates a new principal object in the store.
+
+- **void Update(T principal)**:
+  Updates a principal object in the store.
 
 ## Example Usage
 
