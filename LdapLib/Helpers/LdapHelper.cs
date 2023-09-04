@@ -1,18 +1,20 @@
 ﻿using System;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
-using System.Threading.Tasks;
 
 namespace LdapLib.Helpers
 {
+    /// <summary>
+    /// Provides helper methods for interacting with LDAP operations and searches.
+    /// </summary>
     public static class LdapHelper
     {
         /// <summary>
-        /// Principal search
+        /// Performs a principal search and returns matching results.
         /// </summary>
-        /// <typeparam name="T">Principal object type</typeparam>
-        /// <param name="context">The PrincipalContext that specifies the server or domain against which operations are performed.</param>
-        /// <returns>A Principal object that matches the specified identity value and type or null if no matches are found.</returns>
+        /// <typeparam name="T">The type of principal object.</typeparam>
+        /// <param name="context">The <see cref="PrincipalContext"/> that specifies the server or domain against which operations are performed.</param>
+        /// <returns>A PrincipalSearchResult&lt;T&gt; containing matching principal objects.</returns>
         public static PrincipalSearchResult<T> PrincipalSearch<T>(PrincipalContext context) where T : Principal
         {
             object result;
@@ -51,12 +53,12 @@ namespace LdapLib.Helpers
         }
 
         /// <summary>
-        /// Executes the search and returns only the first entry that is found.
+        /// Performs a search and returns the first entry found.
         /// </summary>
         /// <param name="directoryEntry">The node in the Active Directory Domain Services hierarchy where the search starts.</param>
         /// <param name="filter">The search filter string in Lightweight Directory Access Protocol (LDAP) format.</param>
         /// <param name="propertiesToLoad">The set of properties to retrieve during the search.</param>
-        /// <returns>A SearchResult object that contains the first entry that is found during the search.</returns>
+        /// <returns>A <see cref="SearchResult"/> object containing the first found entry.</returns>
         public static SearchResult FindOne(DirectoryEntry directoryEntry, string filter, string[] propertiesToLoad = null)
         {
             SearchResult response;
@@ -68,13 +70,10 @@ namespace LdapLib.Helpers
             {
                 if (propertiesToLoad != null)
                 {
-                    var padlock = new object();
-
-                    Parallel.ForEach(propertiesToLoad, item =>
+                    foreach (var item in propertiesToLoad)
                     {
-                        lock (padlock)
-                            searcher.PropertiesToLoad.Add(item);
-                    });
+                        searcher.PropertiesToLoad.Add(item);
+                    }
                 }
 
                 response = searcher.FindOne();
@@ -84,10 +83,10 @@ namespace LdapLib.Helpers
         }
 
         /// <summary>
-        /// Find by identity
+        /// Finds a principal object by its identity value.
         /// </summary>
-        /// <typeparam name="T">Principal object type</typeparam>
-        /// <param name="context">The PrincipalContext that specifies the server or domain against which operations are performed.</param>
+        /// <typeparam name="T">The type of principal object.</typeparam>
+        /// <param name="context">The <see cref="PrincipalContext"/> that specifies the server or domain against which operations are performed.</param>
         /// <param name="identityValue">The identity of the principal.</param>
         /// <returns>Returns a principal object that matches the specified identity value.</returns>
         public static T FindByIdentity<T>(PrincipalContext context, string identityValue) where T : Principal
@@ -107,12 +106,12 @@ namespace LdapLib.Helpers
         }
 
         /// <summary>
-        /// Find by identity
+        /// Finds a principal object by its identity value and identity type.
         /// </summary>
-        /// <typeparam name="T">Principal object type</typeparam>
-        /// <param name="context">The PrincipalContext that specifies the server or domain against which operations are performed.</param>
+        /// <typeparam name="T">The type of principal object.</typeparam>
+        /// <param name="context">The <see cref="PrincipalContext"/> that specifies the server or domain against which operations are performed.</param>
         /// <param name="identityType">An IdentityType enumeration value that specifies the format of the identityValue parameter.</param>
-        /// <param name="identityValue">The identity of the principal. This parameter can be any format that is contained in the IdentityType enumeration.</param>
+        /// <param name="identityValue">The identity of the principal.</param>
         /// <returns>Returns a principal object that matches the specified identity value.</returns>
         public static T FindByIdentity<T>(PrincipalContext context, IdentityType identityType, string identityValue) where T : Principal
         {
@@ -139,7 +138,7 @@ namespace LdapLib.Helpers
         /// <param name="sortOption">Gets or sets a value indicating the property on which the results are sorted.</param>
         /// <param name="pageSize">Gets or sets a value indicating the page size in a paged search.</param>
         /// <param name="sizeLimit">Gets or sets a value indicating the maximum number of the objects that the server returns in a search.</param>
-        /// <returns>A SearchResultCollection object that contains the results of the search.</returns>
+        /// <returns>A <see cref="SearchResultCollection"/> object that contains the results of the search.</returns>
         public static SearchResultCollection FindAll(DirectoryEntry directoryEntry, string filter, string[] propertiesToLoad = null, SortOption sortOption = null, int pageSize = 0, int sizeLimit = 0)
         {
             if (pageSize < 0) throw new ArgumentException("Page size cannot be less than 0!", nameof(pageSize));
@@ -157,13 +156,10 @@ namespace LdapLib.Helpers
             {
                 if (propertiesToLoad != null)
                 {
-                    var padlock = new object();
-
-                    Parallel.ForEach(propertiesToLoad, item =>
+                    foreach (var item in propertiesToLoad)
                     {
-                        lock (padlock)
-                            searcher.PropertiesToLoad.Add(item);
-                    });
+                        searcher.PropertiesToLoad.Add(item);
+                    }
                 }
 
                 response = searcher.FindAll();
