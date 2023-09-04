@@ -2,21 +2,21 @@
 <package>
    <metadata>
       <id>LdapLib</id>
-      <version>1.0.9</version>
+      <version>1.0.10</version>
       <title>LdapLib</title>
       <description>LDAP Library for .NET</description>
       <authors>Cem Önal</authors>
       <requireLicenseAcceptance>false</requireLicenseAcceptance>
       <frameworkAssemblies>
-         <frameworkAssembly assemblyName="System.Configuration" targetFramework="net40" />
-		 <frameworkAssembly assemblyName="System.DirectoryServices" targetFramework="net40" />
-         <frameworkAssembly assemblyName="System.DirectoryServices.AccountManagement" targetFramework="net40" />
+         <frameworkAssembly assemblyName="System.Configuration" targetFramework="net481" />
+         <frameworkAssembly assemblyName="System.DirectoryServices" targetFramework="net481" />
+         <frameworkAssembly assemblyName="System.DirectoryServices.AccountManagement" targetFramework="net481" />
       </frameworkAssemblies>
       <repository type="git" url="https://github.com/cemonal/LdapLib" />
       <copyright>Copyright 2018</copyright>
-      <tags>LDAP ActiveDirectory AD LdapLib Ldap.NET</tags>
+      <tags>Ldap LDAPLibrary Ldap.NET .NETFramework LDAPAuthentication LDAPDirectory LDAPSearch LDAPQuery LDAPQuerying</tags>
    </metadata>
    <files>
-      <file src="bin\Release\*.dll" target="lib\net4" />
+      <file src="bin\Release\*.dll" target="lib\net481" />
    </files>
 </package>
